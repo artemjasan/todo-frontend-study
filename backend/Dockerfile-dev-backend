@@ -16,7 +16,6 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false
 RUN poetry install
 
-ENV PORT=8080
 EXPOSE 8080
 
 COPY . .

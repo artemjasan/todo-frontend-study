@@ -20,3 +20,10 @@ class CategoryResponse(CategoryBase):
 
     class Config:
         orm_mode = True
+
+    
+class CategoryDeleteResponse(BaseModel):
+    id: UUID
+
+    class Config:
+        orm_mode = True

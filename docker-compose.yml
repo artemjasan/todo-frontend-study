@@ -17,6 +17,21 @@ services:
     depends_on:
       - postgres
 
+  app_frontend:
+    restart: always
+    build:
+      dockerfile: Dockerfile-dev-frontend
+      context: ./frontend
+    command: npm start
+    volumes:
+      - ./frontend:/frontend
+    stdin_open: true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - app_backend
+
   postgres:
     image: postgres
     command: [ "postgres" , "-c", "log_statement=all" ]
