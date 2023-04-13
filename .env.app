@@ -1,0 +1,2 @@
+PROJECT_NAME="TODO app - backend part"
+PROJECT_VERSION="0.1.0"

@@ -1,0 +1,22 @@
+FROM python:3.10-alpine
+
+# Install build dependencies missing on Alpine.
+RUN apk add --no-cache build-base libffi-dev bash
+
+ENV PYTHONDONTWRITEBYTECODE=1
+
+RUN python -m pip install --upgrade pip
+RUN python -m pip install poetry
+
+# Set working directory inside image.
+WORKDIR backend/
+
+# Insert Poetry files & install deps.
+COPY pyproject.toml poetry.lock ./
+RUN poetry config virtualenvs.create false
+RUN poetry install
+
+ENV PORT=8080
+EXPOSE 8080
+
+COPY . .
