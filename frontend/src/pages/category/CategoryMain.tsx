@@ -34,12 +34,7 @@ const CategoriesPage: React.FC = () => {
 
   const handleDeleteCategory = async (id: string) => {
     const deletedCategoryID = await deleteCategory(id);
-    if (deletedCategoryID) {
-      // Why it dowsn't quite work?
-      // console.log('deletedCategoryID', deletedCategoryID, 'id', id, 'deletedCategoryID.id', deletedCategoryID.id);
-      // deletedCategoryID.id' -> undefined??????!!!!!!!
-      // but deletedCategoryID -> string/UUID
-      // I thought that it would be nice to have checking if the deletedCategoryID.id is the same as the id
+    if (deletedCategoryID && deletedCategoryID.id === id) {
       setCategories(categories.filter((category) => category.id !== id));
     }
   };
