@@ -4,6 +4,11 @@ import { createCategory, getCategories, updateCategory, deleteCategory } from '.
 import CategoryList from './CategoriesList';
 import CategoryForm from './CategoryForm';
 
+export interface CategoryBaseProps {
+  onEdit: (category: CategoryItem) => void;
+  onDelete: (id: string) => void;
+}
+
 const CategoriesPage: React.FC = () => {
   const [categories, setCategories] = React.useState<CategoryItem[]>([]);
 
