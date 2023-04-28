@@ -7,6 +7,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from app.database.models import Base
+from app.schemas.base import BaseDeleteResponse
+
 
 ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -24,7 +26,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         response = await session.execute(select(self.model).where(self.model.id == id_))
         return response.scalar()
 
-    async def get_multi(self, session: AsyncSession) -> list[ModelType | None]:
+    async def get_multi(self, session: AsyncSession) -> list[ModelType]:
         response = await session.execute(select(self.model).order_by(self.model.id.desc()))
         return response.scalars().all()
 
@@ -55,7 +57,8 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         await session.refresh(obj_current)
         return obj_current
 
-    async def delete(self, session: AsyncSession, id_: UUID) -> None:
+    async def delete(self, session: AsyncSession, id_: UUID) -> BaseDeleteResponse:
         response = await self.get(session=session, id_=id_)
         await session.delete(response)
         await session.commit()
+        return BaseDeleteResponse(id=id_)

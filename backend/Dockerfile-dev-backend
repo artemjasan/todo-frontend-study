@@ -20,3 +20,5 @@ ENV PORT=8080
 EXPOSE 8080
 
 COPY . .
+
+RUN chmod +x docker-entrypoint.sh

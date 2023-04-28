@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 from app.crud.crud_categories import category_service
 from app.database.connection import get_session
-from app.schemas import CategoryCreate, CategoryUpdate, CategoryResponse
+from app.schemas import CategoryCreate, CategoryUpdate, CategoryResponse, BaseDeleteResponse
 
 DOES_NOT_EXIST_ERROR_TEMPLATE: typing.Final[str] = "Category with id: {id} does not exist"
 ALREADY_EXISTS_ERROR_TEMPLATE: typing.Final[str] = "Category with name: {name} already exists"
@@ -136,7 +136,7 @@ async def update_category(
     "/{category_id}",
     description="Delete a category",
     responses={
-        status.HTTP_204_NO_CONTENT: {"description": "Category deleted"},
+        status.HTTP_200_OK: {"description": "Category deleted", "model": BaseDeleteResponse},
         status.HTTP_409_CONFLICT: {
             "description": "Category already exists",
             "content": {

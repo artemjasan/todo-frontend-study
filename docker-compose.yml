@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile-dev-backend
-    command: poetry run uvicorn app.main:make_app --factory --host=0.0.0.0 --port=8080 --reload
+    command: ./docker-entrypoint.sh
     env_file:
       - backend/.env.app.dev
       - backend/.env.db.dev
