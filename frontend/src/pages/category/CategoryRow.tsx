@@ -1,11 +1,10 @@
 import { CategoryItem } from '../../interfaces/category';
 import { BaseButton } from '../../components/buttons/BaseButton';
 import { useModal } from '../../hooks/useModal';
+import { CategoryBaseProps } from './CategoryMain';
 
-interface CategoryItemProps {
+interface CategoryItemProps extends CategoryBaseProps {
   category: CategoryItem;
-  onEdit: (category: CategoryItem) => void;
-  onDelete: (id: string) => void;
 }
 
 const CategoryRow: React.FC<CategoryItemProps> = ({ category, onEdit, onDelete }) => {

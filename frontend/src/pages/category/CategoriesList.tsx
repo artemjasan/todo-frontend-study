@@ -1,11 +1,10 @@
 import React from 'react';
 import { CategoryItem } from '../../interfaces/category';
 import CategoryRow from './CategoryRow';
+import { CategoryBaseProps } from './CategoryMain';
 
-interface CategoryListProps {
+interface CategoryListProps extends CategoryBaseProps {
   categories: CategoryItem[];
-  onEdit: (category: CategoryItem) => void;
-  onDelete: (id: string) => void;
 }
 
 const CategoryList: React.FC<CategoryListProps> = ({ categories, onEdit, onDelete }) => {
