@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 
 
 class CategoryBase(BaseModel):
-    name: str = Field(..., max_length=20)
+    name: str = Field(..., max_length=20, example="Food")
 
 
 class CategoryCreate(CategoryBase):
@@ -16,13 +16,6 @@ class CategoryUpdate(CategoryBase):
 
 
 class CategoryResponse(CategoryBase):
-    id: UUID
-
-    class Config:
-        orm_mode = True
-
-    
-class CategoryDeleteResponse(BaseModel):
     id: UUID
 
     class Config:
