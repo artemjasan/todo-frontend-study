@@ -1,18 +1,18 @@
 import { useForm } from 'react-hook-form';
-import { CategoryItem } from '../../interfaces/category';
+import { Category, CategoryName } from '../../interfaces/category';
 import ModalWrapper from './ModalWrapper';
 import { DefaultModalProps } from './factory/ModalFacotry';
 
 export interface EditCategoryModalProps extends DefaultModalProps {
-  category: CategoryItem;
-  onEdit: (category: CategoryItem) => void;
+  category: Category;
+  onEdit: (id: string, data: CategoryName) => void;
 }
 
 const EditCategoryModal: React.FC<EditCategoryModalProps> = ({ category, onEdit, isOpen, onClose }) => {
-  const { register, handleSubmit } = useForm<CategoryItem>({ defaultValues: { ...category } });
+  const { register, handleSubmit } = useForm<Category>({ defaultValues: { ...category } });
 
-  const handleEdit = (data: CategoryItem) => {
-    onEdit(data);
+  const handleEdit = (formData: CategoryName) => {
+    onEdit(category.id, formData);
     onClose();
   };
 

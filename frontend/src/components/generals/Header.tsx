@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { BsFillMoonFill, BsFillSunFill } from 'react-icons/bs';
 import useThemeMode from '../../hooks/useThemeMode';
+import { appLinks } from '../../variables/AppVariables';
 
 const Header: React.FC = () => {
   const [themeMode, toggleThemeMode] = useThemeMode();
@@ -17,12 +18,11 @@ const Header: React.FC = () => {
             </NavLink>
           </div>
           <nav className="flex flex-wrap items-center">
-            <NavLink to="/" className={({ isActive }) => `mx-2 ${isActive ? 'text-blue-500' : 'hover:text-blue-500'}`}>
-              Tasks
-            </NavLink>
-            <NavLink to="/categories" className={({ isActive }) => `mx-2 ${isActive ? 'text-blue-500' : 'hover:text-blue-500'}`}>
-              Categories
-            </NavLink>
+            {Object.entries(appLinks).map(([key, value]) => (
+              <NavLink to={value} className={({ isActive }) => `mx-2 ${isActive ? 'text-blue-500' : 'hover:text-blue-500'}`}>
+                {key}
+              </NavLink>
+            ))}
           </nav>
           <button onClick={toggleThemeMode} className="ml-4 p-1">
             {themeMode === 'light' ? <BsFillMoonFill size={22} /> : <BsFillSunFill size={22} />}

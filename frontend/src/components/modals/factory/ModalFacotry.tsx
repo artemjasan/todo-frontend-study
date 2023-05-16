@@ -5,11 +5,13 @@ import EditCategoryModal from '../EditCategoryModal';
 export const MODAL_TYPES = {
   CATEGORY_EDIT: 'CATEGORY_EDIT',
   CATEGORY_DELETE: 'CATEGORY_DELETE',
+  // TASK_EDIT: 'TASK_EDIT',
 };
 
 export const MODAL_COMPONENTS = {
   CATEGORY_EDIT: EditCategoryModal,
   CATEGORY_DELETE: DeleteCategoryModal,
+  // TASK_EDIT: EditTaskModal,
 };
 
 export interface DefaultModalProps {
@@ -42,6 +44,13 @@ export const ModalFactory: React.FC = () => {
         return <DeleteCategoryModal isOpen={true} onClose={closeModal} category={props.category} onDelete={props.onDelete} />;
       }
       return null;
+
+    // case 'TASK_EDIT':
+    //   if ('onEdit' in props) {
+    //     return <EditTaskModal isOpen={true} onClose={closeModal} task={props.task} onEdit={props.onEdit} />;
+    //   }
+    //   return null;
+
     default:
       return null;
   }

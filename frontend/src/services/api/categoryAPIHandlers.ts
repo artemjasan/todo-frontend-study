@@ -1,10 +1,10 @@
 import { api, headers } from './baseServices';
 import { handleApiError } from './errorHandler';
-import { CategoryItem, CategoryName, CategoryId } from '../../interfaces/category';
+import { Category, CategoryName, CategoryId } from '../../interfaces/category';
 
-export const createCategory = async (category: CategoryName): Promise<CategoryItem | void> => {
+export const createCategory = async (data: CategoryName): Promise<Category | void> => {
   try {
-    const response = await api.post('/api/categories', category, {
+    const response = await api.post('/api/categories', data, {
       headers,
     });
     return response.data;
@@ -13,7 +13,7 @@ export const createCategory = async (category: CategoryName): Promise<CategoryIt
   }
 };
 
-export const getCategories = async (): Promise<CategoryItem[] | void> => {
+export const getCategories = async (): Promise<Category[] | void> => {
   try {
     const response = await api.get('/api/categories', {
       headers,
@@ -24,10 +24,9 @@ export const getCategories = async (): Promise<CategoryItem[] | void> => {
   }
 };
 
-export const updateCategory = async (category: CategoryItem): Promise<CategoryItem | void> => {
-  const category_id = category.id;
+export const updateCategory = async (id: string, data: CategoryName): Promise<Category | void> => {
   try {
-    const response = await api.put(`/api/categories/${category_id}`, category, {
+    const response = await api.put(`/api/categories/${id}`, data, {
       headers,
     });
     return response.data;
@@ -36,9 +35,9 @@ export const updateCategory = async (category: CategoryItem): Promise<CategoryIt
   }
 };
 
-export const deleteCategory = async (category_id: string): Promise<CategoryId | void> => {
+export const deleteCategory = async (id: string): Promise<CategoryId | void> => {
   try {
-    const response = await api.delete(`/api/categories/${category_id}`, {
+    const response = await api.delete(`/api/categories/${id}`, {
       headers,
     });
     return response.data;

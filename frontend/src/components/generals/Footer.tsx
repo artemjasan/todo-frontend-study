@@ -1,5 +1,7 @@
 import React from 'react';
 import '../../index.css';
+import { footerLinks } from '../../variables/AppVariables';
+import { NavLink } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
@@ -10,15 +12,11 @@ const Footer: React.FC = () => {
             <span className="text-xl font-semibold">Taskipy</span>
           </div>
           <nav className="flex flex-wrap">
-            <a href="#!" className="mx-2 hover:text-blue-500">
-              Home
-            </a>
-            <a href="#!" className="mx-2 hover:text-blue-500">
-              About
-            </a>
-            <a href="#!" className="mx-2 hover:text-blue-500">
-              Contact
-            </a>
+            {Object.entries(footerLinks).map(([key, value]) => (
+              <NavLink to={value} className={({ isActive }) => `mx-2 ${isActive ? 'text-blue-500' : 'hover:text-blue-500'}`}>
+                {key}
+              </NavLink>
+            ))}
           </nav>
         </div>
         <div className="text-center">

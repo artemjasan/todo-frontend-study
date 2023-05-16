@@ -1,13 +1,13 @@
 import React from 'react';
 import { RiErrorWarningLine } from 'react-icons/ri';
-import { CategoryItem } from '../../interfaces/category';
+import { Category } from '../../interfaces/category';
 import '../../App.css';
 import ModalWrapper from './ModalWrapper';
 import { DefaultModalProps } from './factory/ModalFacotry';
+import { BaseProps } from '../../interfaces/basic';
 
-interface DeleteCategoryModalProps extends DefaultModalProps {
-  category: CategoryItem;
-  onDelete: (id: string) => void;
+interface DeleteCategoryModalProps extends DefaultModalProps, BaseProps {
+  category: Category;
 }
 
 const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({ category, onDelete, isOpen, onClose }) => {

@@ -1,7 +1,12 @@
 import React from 'react';
-import BaseButtonProps from './buttonInterfaces';
 import '../../index.css';
 import clsx from 'clsx';
+
+export interface BaseButtonProps {
+  onClick: () => void;
+  className: string;
+  label: string;
+}
 
 export const BaseButton: React.FC<BaseButtonProps> = ({ onClick, className, label }) => {
   return (
