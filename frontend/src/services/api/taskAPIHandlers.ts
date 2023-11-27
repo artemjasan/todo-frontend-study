@@ -37,7 +37,7 @@ export const getTask = async (id: string): Promise<TaskWithCategory | undefined>
 
 export const updateTask = async (id: string, data: TaskUpdate): Promise<TaskWithCategory | undefined> => {
   try {
-    const response = await api.patch(`/api/categories/${id}`, data, {
+    const response = await api.patch(`/api/tasks/${id}`, data, {
       headers,
     });
     return response.data;

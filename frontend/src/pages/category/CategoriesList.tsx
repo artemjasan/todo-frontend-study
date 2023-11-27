@@ -9,7 +9,7 @@ interface CategoryListProps extends CategoryBaseProps {
 
 const CategoryList: React.FC<CategoryListProps> = ({ categories, onEdit, onDelete }) => {
   return (
-    <div className="flex flex-col items-center text-black dark:text-white">
+    <div className="flex flex-col gap-2 w-full text-black dark:text-white sm:w-[500px] h-[470px] sm:h-[600px] overflow-y-auto">
       {categories.map((category) => (
         <CategoryRow key={category.id} category={category} onEdit={onEdit} onDelete={onDelete} />
       ))}

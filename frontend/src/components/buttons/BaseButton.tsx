@@ -1,17 +1,22 @@
 import React from 'react';
-import '../../index.css';
-import clsx from 'clsx';
+import { ButtonSize, ButtonType, getButtonSize, getButtonType } from './utils';
 
-export interface BaseButtonProps {
+export interface BaseClickButtonProps {
+  type: ButtonType;
+  size: ButtonSize;
   onClick: () => void;
-  className: string;
-  label: string;
+  label?: string;
+  icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
-export const BaseButton: React.FC<BaseButtonProps> = ({ onClick, className, label }) => {
+export const BaseButton: React.FC<BaseClickButtonProps> = ({ onClick, type, size, label, icon, disabled }) => {
+  const buttonType = getButtonType(type);
+  const buttonSize = getButtonSize(size);
+
   return (
-    <button onClick={onClick} className={clsx(className, 'base-button')}>
-      {label}
+    <button onClick={onClick} className={`${buttonSize} ${buttonType}`} disabled={disabled}>
+      {label ? label : icon ? icon : 'Button'}
     </button>
   );
 };

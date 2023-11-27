@@ -45,7 +45,7 @@ const CategoriesPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-items-center">
+    <div className="flex flex-col items-center py-3 px-3 gap-3">
       <CategoryForm onSubmit={handleCreateCategory} />
       <CategoryList categories={categories} onEdit={handleEditCategory} onDelete={handleDeleteCategory} />
     </div>

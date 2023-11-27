@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Task, TaskCreate, TaskWithCategory, TaskUpdate } from '../../interfaces/task';
-import { getTasks, getTask, createTask, updateTask, deleteTask } from '../../services/api/taskAPIHandlers';
+import { TaskCreate, TaskWithCategory, TaskUpdate } from '../../interfaces/task';
+import { getTasks, createTask, updateTask, deleteTask } from '../../services/api/taskAPIHandlers';
 import { BaseProps } from '../../interfaces/basic';
+import TaskList from './TasksList';
+import TaskForm from './TaskForm';
 
 export interface TaskBaseProps extends BaseProps {
-  // TODO: With type TaskWithCategory or Task?
-  onEdit: (editedTask: Task) => void;
+  onEdit: (id: string, data: TaskUpdate) => void;
 }
 
 const TasksPage: React.FC = () => {
@@ -22,18 +23,17 @@ const TasksPage: React.FC = () => {
     }
   };
 
-  const fetchTask = async (id: string) => {
-    const fetchedTask = await getTask(id);
-    if (fetchedTask) {
-      console.log(fetchedTask);
-      // setTasks([...tasks, fetchedTask]);
-    }
-  };
-
   const handleCreateTask = async (newTask: TaskCreate) => {
     const createdTask = await createTask(newTask);
     if (createdTask) {
       setTasks([...tasks, createdTask]);
+    }
+  };
+
+  const handleEditTask = async (id: string, data: TaskUpdate) => {
+    const updatedTask = await updateTask(id, data);
+    if (updatedTask && updatedTask.id === id) {
+      setTasks(tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)));
     }
   };
 
@@ -43,12 +43,10 @@ const TasksPage: React.FC = () => {
       setTasks(tasks.filter((task) => task.id !== id));
     }
   };
-
   return (
-    // TODO: Add correct styles
-    <div className="flex flex-col justify-items-center">
-      {/* <TaskForm onSubmit={handleCreateTask}/> */}
-      {/* <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDeleteTask}/> */}
+    <div className="flex flex-col items-center py-3 px-3 gap-3 h-[80vh]">
+      <TaskForm onSubmit={handleCreateTask} />
+      <TaskList tasks={tasks} onEdit={handleEditTask} onDelete={handleDeleteTask} />
     </div>
   );
 };

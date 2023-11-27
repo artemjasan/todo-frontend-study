@@ -5,8 +5,8 @@ export interface Task {
   body: string;
   completed: boolean;
   categoryId: string;
-  created_at: string;
-  updated_at: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface TaskWithCategory extends Omit<Task, 'categoryId'> {

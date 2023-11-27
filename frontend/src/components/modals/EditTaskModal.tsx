@@ -1,17 +1,19 @@
 import { useForm } from 'react-hook-form';
-import { Category } from '../../interfaces/category';
 import ModalWrapper from './ModalWrapper';
 import { DefaultModalProps } from './factory/ModalFacotry';
 import { TaskWithCategory, TaskUpdate } from '../../interfaces/task';
+import useCategories from '../../hooks/useCategories';
 
 export interface EditTaskModalProps extends DefaultModalProps {
   task: TaskWithCategory;
-  categories: Array<Category>;
   onEdit: (id: string, data: TaskUpdate) => void;
 }
 
-const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, categories, onEdit, isOpen, onClose }) => {
-  const { register, handleSubmit } = useForm<TaskUpdate>({ defaultValues: { ...task } });
+const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onEdit, isOpen, onClose }) => {
+  const { register, handleSubmit } = useForm<TaskUpdate>({
+    defaultValues: { body: task.body, categoryId: task.category.id, completed: task.completed },
+  });
+  const categories = useCategories();
 
   const handleEdit = (formData: TaskUpdate) => {
     onEdit(task.id, formData);
@@ -20,42 +22,46 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, categories, onEdit,
 
   return !isOpen ? null : (
     <ModalWrapper>
-      <div className="px-6 py-4">
-        <form className="space-y-5" onSubmit={handleSubmit(handleEdit)}>
-          <div className="text-sm">
-            <label htmlFor="body" className="block mb-4 text-lg font-medium text-gray-900 dark:text-white">
-              Update Category
+      <div className="px-6 py-6 lg:px-8">
+        <h3 className="text-center mb-4 text-2xl font-medium text-gray-900 dark:text-white">Update task</h3>
+        <form className="space-y-6" onSubmit={handleSubmit(handleEdit)}>
+          <div>
+            <label htmlFor="body" className="block mb-2 font-medium text-gray-900 dark:text-white">
+              New task
             </label>
-            <textarea
+            <input
               {...register('body', { required: false, maxLength: 255 })}
-              className="w-full bg-gray-50 border border-gray-500 rounded-lg focus:ring-yellow-500 focus:border-blue-500 block p-2.5 dark:bg-gray-400 dark:border-gray-500 dark:placeholder-white"
+              className="text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              placeholder="Type new task..."
             />
-            {task.body}
-            <textarea />
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-row items-center space-x-3">
+            <label htmlFor="completed" className="block font-medium text-gray-900 dark:text-white">
+              Completed
+            </label>
             <input
               type="checkbox"
               {...register('completed', { required: false })}
               className="focus:ring-yellow-500 h-4 w-4 text-yellow-600 border-gray-300 rounded"
             />
-            <label htmlFor="completed" className="text-gray-900 dark:text-white">
-              Completed
-            </label>
           </div>
           <div>
-            <label htmlFor="categoryId" className="block mb-4 text-lg font-medium text-gray-900 dark:text-white">
-              Category
+            <label htmlFor="categoryId" className="block mb-2 font-medium text-gray-900 dark:text-white">
+              Choose a category
             </label>
             <select
+              defaultValue={task.category.id}
               {...register('categoryId', { required: false })}
-              className="w-full bg-gray-50 border border-gray-500 rounded-lg focus:ring-yellow-500 focus:border-blue-500 block p-2.5 dark:bg-gray-400 dark:border-gray-500 dark:text-white"
+              className="text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
             >
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
+              <option selected>{task.category.name}</option>
+              {categories
+                .filter((category) => category.id !== task.category.id)
+                .map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
             </select>
           </div>
           <button

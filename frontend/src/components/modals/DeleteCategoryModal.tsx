@@ -4,10 +4,10 @@ import { Category } from '../../interfaces/category';
 import '../../App.css';
 import ModalWrapper from './ModalWrapper';
 import { DefaultModalProps } from './factory/ModalFacotry';
-import { BaseProps } from '../../interfaces/basic';
 
-interface DeleteCategoryModalProps extends DefaultModalProps, BaseProps {
+export interface DeleteCategoryModalProps extends DefaultModalProps {
   category: Category;
+  onDelete: (id: string) => void;
 }
 
 const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({ category, onDelete, isOpen, onClose }) => {
@@ -17,23 +17,26 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({ category, onD
   };
   return !isOpen ? null : (
     <ModalWrapper>
-      <div className="flex flex-col items-center">
-        <div className="mt-2">
+      <div className="flex flex-col justify-center gap-3 pb-3 w-[500px]">
+        <div className="w-full flex justify-center">
           <RiErrorWarningLine size={56} />
         </div>
-        <div className="mt-3 text-lg text-black dark:text-white">
-          <p>Are you sure you want to delete this category? All tasks associated with this category will also be deleted.</p>
+        <div className="text-center text-lg text-black dark:text-white">
+          <p>Are you sure you want to delete this category?</p>
+          <p>All tasks associated with this category will also be deleted.</p>
         </div>
-        <div className="flex flex-wraps justify-center space-x-3 m-1 p-3 text-sm">
-          <button
-            onClick={handleDelete}
-            className="base-button bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium px-5 py-2.5"
-          >
-            Delete
-          </button>
+        <div className="flex gap-3 justify-center">
+          {
+            <button
+              onClick={handleDelete}
+              className="base-button hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-800 font-medium"
+            >
+              Delete
+            </button>
+          }
           <button
             onClick={onClose}
-            className="base-button bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium px-5 py-2.5"
+            className="base-button hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-800 font-medium"
           >
             Cancel
           </button>

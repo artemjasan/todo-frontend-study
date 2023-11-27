@@ -1,51 +1,41 @@
 import React, { createContext, PropsWithChildren, useState } from 'react';
-import { MODAL_COMPONENTS, MODAL_TYPES } from '../factory/ModalFacotry';
+import { MODAL_COMPONENTS, ModalTypes, DefaultModalProps } from '../factory/ModalFacotry';
 
-type FunctionModalProps<T extends ModalTypes> = (typeof MODAL_COMPONENTS)[T] extends React.FC<infer R>
-  ? Omit<R, 'isOpen' | 'onClose'>
+type ModalComponentsMap = typeof MODAL_COMPONENTS;
+
+// Утилита для вывода пропов компонента модального окна
+export type FunctionModalProps<T extends ModalTypes> = ModalComponentsMap[T] extends React.FC<infer R>
+  ? Omit<R, keyof DefaultModalProps>
   : never;
 
-type ShowModalFunc = <T extends ModalTypes>(modalType: T, modalProps: FunctionModalProps<T>) => void;
-
-type ModalKeys = keyof typeof MODAL_COMPONENTS;
-type ComponentsProps = {
-  [K in ModalKeys]: (typeof MODAL_COMPONENTS)[K] extends React.FC<infer R> ? R : never;
-};
-
-type ModalPropsUnion = ComponentsProps[ModalTypes];
-
-export interface ModalContextProps {
-  modal?: ModalProps;
-  showModal: ShowModalFunc;
-  closeModal: () => void;
+// Состояние модального окна
+interface ModalState<T extends ModalTypes> {
+  modalType: T;
+  modalProps: FunctionModalProps<T>;
 }
-export type ModalTypes = keyof typeof MODAL_TYPES;
 
-export interface ModalProps {
-  modalType: ModalTypes;
-  modalProps: ModalPropsUnion;
-}
+type AnyModalState = ModalState<ModalTypes>;
 
 export const ModalContext = createContext<ModalContextProps>({
   modal: undefined,
   showModal: () => ({}),
   closeModal: () => ({}),
 });
-/** This provider is responsible for opening/closing active modal
- *
- * @param param0 - children, which is main page content
- * @returns <ModalContext.Provider/>
- */
+
+export interface ModalContextProps {
+  modal?: AnyModalState;
+  showModal: <T extends ModalTypes>(modalType: T, modalProps: FunctionModalProps<T>) => void;
+  closeModal: () => void;
+}
+
 export const ModalProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [modal, setModal] = useState<ModalProps>();
+  const [modal, setModal] = useState<AnyModalState | undefined>(undefined);
 
   const closeModal = () => setModal(undefined);
 
-  const showModal: ShowModalFunc = (modalType, modalProps) =>
-    setModal({
-      modalType,
-      modalProps: modalProps as unknown as ModalPropsUnion,
-    });
+  const showModal = <T extends ModalTypes>(modalType: T, modalProps: FunctionModalProps<T>) => {
+    setModal({ modalType, modalProps } as ModalState<T>);
+  };
 
   return <ModalContext.Provider value={{ showModal, modal, closeModal }}>{children}</ModalContext.Provider>;
 };
