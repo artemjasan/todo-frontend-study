@@ -60,7 +60,7 @@ async def get_task(
     status_code=status.HTTP_201_CREATED,
     responses={
         status.HTTP_201_CREATED: {"description": "Task created", "model": TaskResponse},
-        status.HTTP_400_BAD_REQUEST: {
+        status.HTTP_404_NOT_FOUND: {
             "description": "Category with id: {id} does not exist",
             "content": {
                 "application/json": {
@@ -80,12 +80,12 @@ async def create_task(
         return await task_service.create(session=session, obj_in=task)
     except IntegrityError:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Category with id: {task.category_id} does not exist"
         )
 
 
-@task_router.put(
+@task_router.patch(
     "/{task_id}",
     description="Update a task",
     responses={
@@ -119,6 +119,16 @@ async def update_task(
     description="Delete a task",
     responses={
         status.HTTP_200_OK: {"description": "Task deleted", "model": BaseDeleteResponse},
+        status.HTTP_404_NOT_FOUND: {
+            "description": "Task not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": DOES_NOT_EXIST_ERROR_TEMPLATE.format(id="00000000-0000-0000-0000-000000000000")
+                    }
+                }
+            }
+        },
     },
 )
 async def delete_task(

@@ -27,6 +27,9 @@ code {
   padding-bottom: 0.25rem/* 4px */;
 }
 
+
+/* focus:ring-4 focus:outline-none focus:ring-red-800 font-medium */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

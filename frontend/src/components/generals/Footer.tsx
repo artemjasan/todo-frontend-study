@@ -1,29 +1,25 @@
 import React from 'react';
 import '../../index.css';
+import { footerLinks } from '../../variables/AppVariables';
+import { NavLink } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-400 text-black dark:bg-gray-800 dark:text-white">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-between items-center py-1">
-          <div className="w-full md:w-auto mb-4 md:mb-0">
-            <span className="text-xl font-semibold">Taskipy</span>
-          </div>
-          <nav className="flex flex-wrap">
-            <a href="#!" className="mx-2 hover:text-blue-500">
-              Home
-            </a>
-            <a href="#!" className="mx-2 hover:text-blue-500">
-              About
-            </a>
-            <a href="#!" className="mx-2 hover:text-blue-500">
-              Contact
-            </a>
-          </nav>
+    <footer className="bg-gray-400 text-black dark:bg-gray-800 dark:text-white py-3 px-3">
+      <div className="flex justify-between items-center pb-3">
+        <div className="w-full">
+          <span className="text-xl font-semibold">Taskipy</span>
         </div>
-        <div className="text-center">
-          <p>© 2023 Taskipy. All Rights Reserved.</p>
-        </div>
+        <nav className="flex items-center gap-3 justify-center">
+          {Object.entries(footerLinks).map(([key, value]) => (
+            <NavLink key={key} to={value} className={({ isActive }) => `${isActive ? 'text-blue-500' : 'hover:text-blue-500'}`}>
+              {key}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+      <div className="text-center dark:text-gray-400 text-gray-600 text-sm">
+        <p>© 2023 Taskipy. All Rights Reserved.</p>
       </div>
     </footer>
   );

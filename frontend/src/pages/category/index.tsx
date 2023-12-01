@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-import { CategoryItem, CategoryName } from '../../interfaces/category';
+import { Category, CategoryName } from '../../interfaces/category';
 import { createCategory, getCategories, updateCategory, deleteCategory } from '../../services/api/categoryAPIHandlers';
 import CategoryList from './CategoriesList';
 import CategoryForm from './CategoryForm';
+import { BaseProps } from '../../interfaces/basic';
 
-export interface CategoryBaseProps {
-  onEdit: (category: CategoryItem) => void;
-  onDelete: (id: string) => void;
+export interface CategoryBaseProps extends BaseProps {
+  onEdit: (id: string, data: CategoryName) => void;
 }
 
 const CategoriesPage: React.FC = () => {
-  const [categories, setCategories] = React.useState<CategoryItem[]>([]);
+  const [categories, setCategories] = React.useState<Category[]>([]);
 
   useEffect(() => {
     fetchCategories();
@@ -23,16 +23,16 @@ const CategoriesPage: React.FC = () => {
     }
   };
 
-  const handleCreateCategory = async (createdCategory: CategoryName) => {
-    const newCategory = await createCategory(createdCategory);
-    if (newCategory) {
-      setCategories([...categories, newCategory]);
+  const handleCreateCategory = async (formData: CategoryName) => {
+    const createdCategory = await createCategory(formData);
+    if (createdCategory) {
+      setCategories([...categories, createdCategory]);
     }
   };
 
-  const handleEditCategory = async (editedCategory: CategoryItem) => {
-    const updatedCategory = await updateCategory(editedCategory);
-    if (updatedCategory && updatedCategory.id === editedCategory.id) {
+  const handleEditCategory = async (id: string, formData: CategoryName) => {
+    const updatedCategory = await updateCategory(id, formData);
+    if (updatedCategory && updatedCategory.id === id) {
       setCategories(categories.map((category) => (category.id === updatedCategory.id ? updatedCategory : category)));
     }
   };
@@ -45,7 +45,7 @@ const CategoriesPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-items-center">
+    <div className="flex flex-col items-center py-3 px-3 gap-3">
       <CategoryForm onSubmit={handleCreateCategory} />
       <CategoryList categories={categories} onEdit={handleEditCategory} onDelete={handleDeleteCategory} />
     </div>

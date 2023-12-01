@@ -64,6 +64,7 @@ class CRUDTask(CRUDBase[models.Task, TaskCreate, TaskUpdate]):
         )
         response = await session.execute(query)
         await session.commit()
+        await session.refresh(obj_current)
         task_id = response.scalars().first()
         return await self.get(session=session, id_=task_id)
 

@@ -1,7 +1,7 @@
-export interface CategoryItem {
+export interface Category {
   id: string;
   name: string;
 }
 
-export type CategoryName = Pick<CategoryItem, 'name'>;
-export type CategoryId = Pick<CategoryItem, 'id'>;
+export type CategoryName = Pick<Category, 'name'>;
+export type CategoryId = Pick<Category, 'id'>;

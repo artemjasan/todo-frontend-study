@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import HomePage from '../pages/task/TaskMain';
-import CategoriesPage from '../pages/category/CategoryMain';
+import TaskPage from '../pages/task';
+import CategoriesPage from '../pages/category';
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<TaskPage />} />
       <Route path="/categories" element={<CategoriesPage />} />
     </Routes>
   );
